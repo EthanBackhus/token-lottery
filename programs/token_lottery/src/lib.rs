@@ -5,7 +5,7 @@ use anchor_lang::prelude::*;
 pub mod shared;
 use shared::*;
 
-declare_id!("coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF");
+declare_id!("Fgw5uuJD9seki8nd1q4AsvXsadZfwVXiDBRijLAkSsJF");
 
 #[program]
 pub mod token_lottery {
@@ -23,6 +23,11 @@ pub mod token_lottery {
         ctx.accounts.token_lottery.total_tickets = 0;
         ctx.accounts.token_lottery.randomness_account = Pubkey::default();
         ctx.accounts.token_lottery.winner_chosen = false;
+
+        Ok(())
+    }
+
+    pub fn initialize_lottery(ctx: Context<InitializeLottery>) -> Result<()> {
 
         Ok(())
     }
@@ -64,4 +69,11 @@ pub struct TokenLottery {
     pub ticket_price: u64,
     pub authority: Pubkey,
     pub randomness_account: Pubkey
+}
+
+#[derive(Accounts)]
+pub struct InitializeLottery<'info> {
+
+    #[account(mut)]
+    
 }

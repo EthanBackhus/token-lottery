@@ -32,7 +32,7 @@ describe('tokenlottery', () => {
 
     console.log('Your transaction signature ', tx);
 
-    const signature = await anchor.web3.sendAndConfirmTransaction(provider.connection, tx, [wallet.payer]);
+    const signature = await anchor.web3.sendAndConfirmTransaction(provider.connection, tx, [wallet.payer], {skipPreflight: true});
     console.log('Your transaction signature', signature);
 
   });

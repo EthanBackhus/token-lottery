@@ -3,6 +3,13 @@
 use anchor_lang::prelude::*;
 
 pub mod shared;
+use anchor_spl::{
+    associated_token::AssociatedToken, 
+    metadata::Metadata, 
+    token_interface::{
+        Mint, TokenInterface
+    }
+};
 use shared::*;
 
 declare_id!("Fgw5uuJD9seki8nd1q4AsvXsadZfwVXiDBRijLAkSsJF");
@@ -27,7 +34,7 @@ pub mod token_lottery {
         Ok(())
     }
 
-    pub fn initialize_lottery(ctx: Context<InitializeLottery>) -> Result<()> {
+    pub fn initialize_lottery(_ctx: Context<InitializeLottery>) -> Result<()> {
 
         Ok(())
     }
@@ -75,5 +82,24 @@ pub struct TokenLottery {
 pub struct InitializeLottery<'info> {
 
     #[account(mut)]
-    
+    pub payer: Signer<'info>,
+
+    #[account(
+        init,
+        payer = payer,
+        mint::decimals = 0,
+        mint::authority = payer,
+        mint::freeze_authority = payer,
+        seeds = [b"collection_mint".as_ref()],
+        bump,
+    )]
+    pub collection_mint: InterfaceAccount<'info, Mint>,
+
+
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    pub token_metadata_program: Program<'info, Metadata>,
+    pub token_program: Interface<'info, TokenInterface>,
+
+    // needed because we are creating programs
+    pub system_program: Program<'info, System>,
 }
